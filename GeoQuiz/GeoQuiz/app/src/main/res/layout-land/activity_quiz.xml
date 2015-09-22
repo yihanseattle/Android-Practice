@@ -34,21 +34,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|start"
+        android:layout_margin="10dp"
         android:contentDescription="@string/bPrevText"
         android:src="@drawable/arrow_left"
-        android:layout_margin="10dp"
 
         />
+
+    <Button
+        android:id="@+id/bCheat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:layout_margin="10dp"
+        android:text="@string/cheat_button" />
 
     <ImageButton
         android:id="@+id/bNext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:contentDescription="@string/bNextText"
-        android:src="@drawable/arrow_right"
         android:layout_margin="10dp"
-        />
+        android:contentDescription="@string/bNextText"
+        android:src="@drawable/arrow_right" />
 
 
 </FrameLayout>

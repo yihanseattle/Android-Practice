@@ -1,5 +1,6 @@
 package app.com.yihan.android.geoquiz;
 
+import android.content.Intent;
 import android.media.Image;
 import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,7 @@ public class QuizActivity extends AppCompatActivity {
     private TextView mTextViewQuestion;
     private Button mButtonTrue;
     private Button mButtonFlase;
+    private Button mButtonCheat;
     private ImageButton mImageButtonPrev;
     private ImageButton mImageButtonNext;
 
@@ -30,6 +32,10 @@ public class QuizActivity extends AppCompatActivity {
     };
     private int mCurrentIndex = 0;
 
+    // determine if the user clicked the "show answer" button in CheatActivity
+    private boolean mIsCheater;
+    private CheatingHistory mCheatingHistory;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +44,10 @@ public class QuizActivity extends AppCompatActivity {
         // retrieve saved data
         if (savedInstanceState != null) {
             mCurrentIndex = savedInstanceState.getInt(Constants.KEY_INDEX, 0);
+            mIsCheater = savedInstanceState.getBoolean(Constants.HAS_USER_CHEATED, false);
+            mCheatingHistory = savedInstanceState.getParcelable(Constants.CHEATING_HISTORY);
+        } else {
+            mCheatingHistory = new CheatingHistory(mQuestionBank.length);
         }
 
         // Initialize question TextView
@@ -85,6 +95,19 @@ public class QuizActivity extends AppCompatActivity {
             }
         });
 
+        mButtonCheat = (Button) findViewById(R.id.bCheat);
+        mButtonCheat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Start CheatActivity
+                boolean answer = mQuestionBank[mCurrentIndex].isAnswerTrue();
+                Intent i = CheatActivity.newIntet(getApplicationContext(), answer);
+
+                // unique request code for this child activity
+                startActivityForResult(i, Constants.REQUEST_CODE_CHEAT);
+            }
+        });
+
     }
 
     /**
@@ -96,6 +119,44 @@ public class QuizActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(Constants.KEY_INDEX, mCurrentIndex);
+        outState.putBoolean(Constants.HAS_USER_CHEATED, mIsCheater);
+        outState.putParcelable(Constants.CHEATING_HISTORY, mCheatingHistory);
+    }
+
+    /**
+     * Get the information that describes what happened in children activities
+     *
+     * @param requestCode : if the setResult() has been called in child activity
+     * @param resultCode : which child activity has just been returned
+     * @param data : the Intent that was passed by child activity
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_OK) {
+            // if setResult() is not called, then when the user presses the Back button
+            // the parent will receive Activity.RESULT_CANCELED.
+            return;
+        } else {
+
+            // pick a child activity
+            if (requestCode == Constants.REQUEST_CODE_CHEAT) {
+                if (data == null) {
+                    return;
+                } else {
+                    mIsCheater = CheatActivity.wasAnswerShown(data);
+                    if (mIsCheater) {
+                        // record cheating history
+                        mCheatingHistory.setCheatAt(mCurrentIndex);
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onActivityReenter(int resultCode, Intent data) {
+        super.onActivityReenter(resultCode, data);
     }
 
     @Override
@@ -138,10 +199,16 @@ public class QuizActivity extends AppCompatActivity {
         boolean correctAnswer = mQuestionBank[mCurrentIndex].isAnswerTrue();
 
         int outputMessageId = 0;
-        if (userInputAnswer == correctAnswer) {
-            outputMessageId = R.string.toast_correct;
+        if (mIsCheater || mCheatingHistory.isCheatAt(mCurrentIndex)) {
+            // the user has cheated
+            outputMessageId = R.string.judgment_toast;
         } else {
-            outputMessageId = R.string.toast_incorrect;
+            // the user didn't cheat
+            if (userInputAnswer == correctAnswer) {
+                outputMessageId = R.string.toast_correct;
+            } else {
+                outputMessageId = R.string.toast_incorrect;
+            }
         }
 
         Toast.makeText(getApplicationContext(), outputMessageId, Toast.LENGTH_SHORT).show();
@@ -153,6 +220,7 @@ public class QuizActivity extends AppCompatActivity {
     private void goToThePreviousQuestion() {
         mCurrentIndex = (mCurrentIndex - 1) % mQuestionBank.length;
         updateQuestion();
+        reset();
     }
 
     /**
@@ -161,5 +229,13 @@ public class QuizActivity extends AppCompatActivity {
     private void goToTheNextQuestion() {
         mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
         updateQuestion();
+        reset();
+    }
+
+    /**
+     * Reset necessary variables.
+     */
+    private void reset() {
+        mIsCheater = false;
     }
 }
