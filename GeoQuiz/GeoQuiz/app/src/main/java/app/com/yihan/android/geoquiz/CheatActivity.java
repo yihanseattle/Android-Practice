@@ -1,12 +1,17 @@
 package app.com.yihan.android.geoquiz;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -45,6 +50,25 @@ public class CheatActivity extends AppCompatActivity {
 
                 // send the result back to parent activity (QuizActivty)
                 setAnswerShownResult(true);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    int cx = mButtonShowAnswer.getWidth() / 2;
+                    int cy = mButtonShowAnswer.getHeight() / 2;
+                    float radius = mButtonShowAnswer.getWidth();
+                    Animator anim = ViewAnimationUtils.createCircularReveal(mButtonShowAnswer, cx, cy, radius, 0);
+                    anim.addListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            mTextViewAnswer.setVisibility(View.VISIBLE);
+                            mButtonShowAnswer.setVisibility(View.INVISIBLE);
+                        }
+                    });
+                    anim.start();
+                } else {
+                    mTextViewAnswer.setVisibility(View.VISIBLE);
+                    mButtonShowAnswer.setVisibility(View.INVISIBLE);
+                }
             }
         });
 

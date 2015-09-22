@@ -2,6 +2,7 @@ package app.com.yihan.android.geoquiz;
 
 import android.content.Intent;
 import android.media.Image;
+import android.os.Build;
 import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 public class QuizActivity extends AppCompatActivity {
 
     private TextView mTextViewQuestion;
+    private TextView mTextViewAPIInfo;
     private Button mButtonTrue;
     private Button mButtonFlase;
     private Button mButtonCheat;
@@ -107,6 +109,9 @@ public class QuizActivity extends AppCompatActivity {
                 startActivityForResult(i, Constants.REQUEST_CODE_CHEAT);
             }
         });
+
+        mTextViewAPIInfo = (TextView) findViewById(R.id.tvAPIInfo);
+        mTextViewAPIInfo.setText("API Level: " + Build.VERSION.SDK_INT);
 
     }
 
