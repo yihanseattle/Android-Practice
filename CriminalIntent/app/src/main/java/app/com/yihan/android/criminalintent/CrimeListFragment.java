@@ -98,7 +98,7 @@ public class CrimeListFragment extends Fragment {
 
     /**
      * Response to add crime action button.
-     *
+     * <p/>
      * Toggling the action item subtitle.
      *
      * @param item
@@ -139,6 +139,7 @@ public class CrimeListFragment extends Fragment {
             mAdapter = new CrimeAdapter(crimes);
             mRecyclerViewCrime.setAdapter(mAdapter);
         } else {
+            mAdapter.setCrimes(crimes);
             mAdapter.notifyDataSetChanged();
         }
 
@@ -235,6 +236,11 @@ public class CrimeListFragment extends Fragment {
         public int getItemCount() {
             return mCrimes.size();
         }
+
+        public void setCrimes(List<Crime> crimes) {
+            mCrimes = crimes;
+        }
+
     }
 
     /**
@@ -252,5 +258,6 @@ public class CrimeListFragment extends Fragment {
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.getSupportActionBar().setSubtitle(subtitle);
     }
+
 
 }
