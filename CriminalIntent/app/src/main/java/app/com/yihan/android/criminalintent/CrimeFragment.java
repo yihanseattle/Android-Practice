@@ -1,8 +1,11 @@
 package app.com.yihan.android.criminalintent;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -13,11 +16,13 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 
+import java.util.Date;
 import java.util.UUID;
 
 import app.com.yihan.android.criminalintent.model.Crime;
 import app.com.yihan.android.criminalintent.modelHelper.CrimeLab;
 import app.com.yihan.android.criminalintent.others.Constants;
+import app.com.yihan.android.criminalintent.others.DatePickerFragment;
 
 
 /**
@@ -72,8 +77,16 @@ public class CrimeFragment extends Fragment {
         });
 
         mButtonDate = (Button) v.findViewById(R.id.bCrimeDate);
-        mButtonDate.setText(mCrime.getFormattedDate());
-        mButtonDate.setEnabled(false);
+        updateDate();
+        mButtonDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager manager = getFragmentManager();
+                DatePickerFragment dialog = DatePickerFragment.newInstance(mCrime.getDate());
+                dialog.setTargetFragment(CrimeFragment.this, Constants.REQUEST_DATE);
+                dialog.show(manager, Constants.DIALOG_DATE);
+            }
+        });
 
         mCheckBoxSolved = (CheckBox) v.findViewById(R.id.cbCrimeSolved);
         mCheckBoxSolved.setChecked(mCrime.isSolved());
@@ -87,5 +100,31 @@ public class CrimeFragment extends Fragment {
 
 
         return v;
+    }
+
+    /**
+     *
+     * Returning data from DatePickerFragment
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+
+        if (requestCode == Constants.REQUEST_DATE) {
+            Date date = (Date) data.getSerializableExtra(Constants.EXTRA_DATE);
+            mCrime.setDate(date);
+            updateDate();
+        }
+    }
+
+    private void updateDate() {
+        mButtonDate.setText(mCrime.getFormattedDate());
     }
 }

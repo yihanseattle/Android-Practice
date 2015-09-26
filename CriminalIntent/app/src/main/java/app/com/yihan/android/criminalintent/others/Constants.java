@@ -11,6 +11,11 @@ public class Constants {
 
     // Constants for CrimeFragment
     public static final String ARG_CRIME_ID = "crime_id";
+    public static final String DIALOG_DATE = "DialogDate";
+    public static final int REQUEST_DATE = 0;
 
+    // Constants for DatePickerFragment
+    public static final String ARG_DATE = "date";
+    public static final String EXTRA_DATE = "app.com.yihan.android.criminalIntent.date";
 
 }
