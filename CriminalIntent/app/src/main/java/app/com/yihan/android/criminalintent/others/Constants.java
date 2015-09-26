@@ -8,6 +8,7 @@ public class Constants {
     // Constants for CrimeListFragment to start a CrimeActivty(contains a CrimeFragment)
     // This is also for CrimePagerActivity
     public static final String EXTRA_CRIME_ID = "app.com.yihan.android.criminalIntent.crime_id";
+    public static final String SAVED_SUBTITLE_VISIBLE = "subtitle";
 
     // Constants for CrimeFragment
     public static final String ARG_CRIME_ID = "crime_id";
