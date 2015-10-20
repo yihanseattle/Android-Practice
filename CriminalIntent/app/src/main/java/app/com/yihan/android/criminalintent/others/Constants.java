@@ -14,6 +14,7 @@ public class Constants {
     public static final String ARG_CRIME_ID = "crime_id";
     public static final String DIALOG_DATE = "DialogDate";
     public static final int REQUEST_DATE = 0;
+    public static final int REQUEST_CONTACT = 1;
 
     // Constants for DatePickerFragment
     public static final String ARG_DATE = "date";

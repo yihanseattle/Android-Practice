@@ -12,6 +12,7 @@ public class Crime {
 
     private UUID mId;
     private String mTitle;
+    private String mSuspect;
 
 
     private Date mDate;
@@ -58,5 +59,13 @@ public class Crime {
     public String getFormattedDate() {
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss"); //08/06/2014 15:59:48
         return dateFormat.format(this.getDate());
+    }
+
+    public String getSuspect() {
+        return mSuspect;
+    }
+
+    public void setSuspect(String suspect) {
+        mSuspect = suspect;
     }
 }
