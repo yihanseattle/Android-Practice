@@ -15,6 +15,7 @@ public class Constants {
     public static final String DIALOG_DATE = "DialogDate";
     public static final int REQUEST_DATE = 0;
     public static final int REQUEST_CONTACT = 1;
+    public static final int REQUEST_PHOTO = 2;
 
     // Constants for DatePickerFragment
     public static final String ARG_DATE = "date";
