@@ -8,12 +8,12 @@
         <item name="colorAccent">@color/gray</item>
         <!-- override background color -->
         <item name="android:colorBackground">@color/soothing_blue</item>
-        <!-- override button sytle -->
+        <!-- override button style -->
         <item name="android:buttonStyle">@style/BeatBoxButton</item>
     </style>
 
     <style name="BeatBoxButton" parent="android:style/Widget.Holo.Button">
-        <item name="android:background">@color/dark_blue</item>
+        <item name="android:background">@drawable/button_beat_box</item>
     </style>
 
 

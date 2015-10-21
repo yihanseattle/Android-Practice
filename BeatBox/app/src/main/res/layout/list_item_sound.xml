@@ -1,9 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Button
-    android:id="@+id/list_item_sound_button"
+<!-- Your recycler view will always show three columns, no matter what the screen size is. -->
+<!-- If there is extra room, the recycler view will stretch those columns to fit the device.-->
+<!-- You do not want the recycler view to stretch your buttons, so you wrapped your buttons in a frame layout.-->
+<!-- The frame layout will be stretched and the buttons will not. -->
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="120dp"
-    tools:text="Sound name"
-    />
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    >
+
+    <Button
+        android:id="@+id/list_item_sound_button"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        tools:text="Sound name"
+        />
+
+
+</FrameLayout>
