@@ -48,6 +48,7 @@ public class CrimeLab {
     public List<Crime> getCrimes() {
         List<Crime> crimes = new ArrayList<>();
 
+        // query all crimes, save, and return
         CrimeCursorWrapper cursor = queryCrimes(null, null);
 
         try {
@@ -64,6 +65,8 @@ public class CrimeLab {
     }
 
     public Crime getCrime(UUID id) {
+
+        // query one crime, save, and return
         CrimeCursorWrapper cursor = queryCrimes(
                 CrimeTable.Cols.UUID + " = ?",
                 new String[] { id.toString() }

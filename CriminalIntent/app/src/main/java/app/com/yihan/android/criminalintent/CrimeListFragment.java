@@ -52,6 +52,7 @@ public class CrimeListFragment extends Fragment {
         mRecyclerViewCrime = (RecyclerView) view.findViewById(R.id.crime_recycler_view);
         // RecyclerView requires a LayoutManager to work.
         // If you forget to give it one, it will crash.
+        // LINEARLAYOUT for the RecyclerView
         mRecyclerViewCrime.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         // recover the state of subtitle so that it can be properly displayed after rotation
@@ -74,6 +75,8 @@ public class CrimeListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        // update RecyclerView when we are back from CrimeFragment
         updateUI();
     }
 
@@ -139,6 +142,9 @@ public class CrimeListFragment extends Fragment {
             mAdapter = new CrimeAdapter(crimes);
             mRecyclerViewCrime.setAdapter(mAdapter);
         } else {
+            // mCrimes is gone. So the List<Crime> returned by getCrimes()
+            // is a snapshot of the Crimes at one point in time.
+            // we need to update the List<Crime> in the adapter in case user has edited a crime
             mAdapter.setCrimes(crimes);
             mAdapter.notifyDataSetChanged();
         }
@@ -165,12 +171,14 @@ public class CrimeListFragment extends Fragment {
             mTextViewTitle = (TextView) itemView.findViewById(R.id.list_item_crime_title_text_view);
             mTextViewDate = (TextView) itemView.findViewById(R.id.list_item_crime_date_text_view);
             mCheckBoxSolved = (CheckBox) itemView.findViewById(R.id.list_item_crime_solved_check_box);
+
+            // add onclick listener for each row
             itemView.setOnClickListener(this);
 
         }
 
         /**
-         * Helper method to bind View with the Model
+         * Helper method to update View with the Model
          *
          * @param crime
          */
@@ -237,6 +245,11 @@ public class CrimeListFragment extends Fragment {
             return mCrimes.size();
         }
 
+        /**
+         * Update that snapshot from SQLite to the List<Crime>
+         *
+         * @param crimes
+         */
         public void setCrimes(List<Crime> crimes) {
             mCrimes = crimes;
         }

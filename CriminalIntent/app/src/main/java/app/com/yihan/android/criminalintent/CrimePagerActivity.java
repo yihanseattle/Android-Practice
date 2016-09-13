@@ -39,6 +39,7 @@ public class CrimePagerActivity extends AppCompatActivity {
         mCrimes = CrimeLab.getInstance(this).getCrimes();
         FragmentManager fragmentManager = getSupportFragmentManager();
 
+        // get UUID from recyclerView
         UUID crimeId = (UUID) getIntent().getSerializableExtra(Constants.EXTRA_CRIME_ID);
 
         /**
@@ -78,6 +79,8 @@ public class CrimePagerActivity extends AppCompatActivity {
             }
         });
 
+        // By default, the ViewPager show the first item in its PagerAdapter.
+        // locate the crime and let the ViewPager display that crime
         for (int i = 0; i < mCrimes.size(); i++) {
             if (mCrimes.get(i).getId().equals(crimeId)) {
                 mViewPager.setCurrentItem(i);

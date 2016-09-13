@@ -54,6 +54,7 @@ public class CrimeFragment extends Fragment {
 
     public static CrimeFragment newInstance(UUID crimeId) {
         Bundle args = new Bundle();
+        // 下面等他被start以后，那到的东西通过这个serializable存在了bundle里
         args.putSerializable(Constants.ARG_CRIME_ID, crimeId);
         CrimeFragment fragment = new CrimeFragment();
         fragment.setArguments(args);
@@ -72,6 +73,7 @@ public class CrimeFragment extends Fragment {
     public void onPause() {
         super.onPause();
 
+        // save crime when user exit this fragment
         CrimeLab.getInstance(getActivity()).updateCrime(mCrime);
     }
 
@@ -130,6 +132,7 @@ public class CrimeFragment extends Fragment {
                 i.setType("text/plain");
                 i.putExtra(Intent.EXTRA_TEXT, getCrimeReport());
                 i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.crime_report_subject));
+                // 强行显示chooser for implicit intent
                 i = Intent.createChooser(i, getString(R.string.send_report));
                 startActivity(i);
             }

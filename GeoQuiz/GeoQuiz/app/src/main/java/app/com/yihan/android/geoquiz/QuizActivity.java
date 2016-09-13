@@ -159,6 +159,8 @@ public class QuizActivity extends AppCompatActivity {
         }
     }
 
+
+
     @Override
     public void onActivityReenter(int resultCode, Intent data) {
         super.onActivityReenter(resultCode, data);

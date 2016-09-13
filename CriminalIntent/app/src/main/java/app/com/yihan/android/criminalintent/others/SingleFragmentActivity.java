@@ -13,8 +13,8 @@ import app.com.yihan.android.criminalintent.R;
  */
 public abstract class SingleFragmentActivity extends AppCompatActivity {
 
+    // let subclass to implement it
     protected abstract Fragment createFragment();
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -25,6 +25,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
         Fragment fragment = fm.findFragmentById(R.id.fragment_container);
 
         if (fragment == null) {
+            // subclass will implement createFragment() method
             fragment = createFragment();
             fm.beginTransaction().add(R.id.fragment_container, fragment).commit();
         }
